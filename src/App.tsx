@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from './Components/Home/Home';
+import Login from './Components/Login/Login';
+import CreateEvent from './Components/Events/CreateEvent';
+import ViewUsers from './Components/Users/ViewUsers';
+import AdministerEvent from './Components/Events/AdministerEvent';
+
 
 function App() {
+
+const authorizeChecker = () => {
+   if (localStorage.getItem('username') === process.env.REACT_APP_USERNAME && localStorage.getItem('password') === process.env.REACT_APP_PASSWORD){
+      setAuthenticated(true)
+   } else {
+     setAuthenticated(false)
+   }
+}
+
+useEffect(()=> {
+      authorizeChecker()
+}, [])
+  
+const [authenticated, setAuthenticated] = useState(false)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Routes>
+      {/* Home */}
+      <Route path='/' element={authenticated ? <Home/> :  <Login setAuthenticated={setAuthenticated} />} />
+
+      {/* View users  */}
+      <Route path='/users' element={authenticated ? <ViewUsers/> :  <Login setAuthenticated={setAuthenticated} />} />
+
+      {/* View events */}
+      <Route path='/create-event' element={authenticated ? <CreateEvent/> :  <Login setAuthenticated={setAuthenticated} />} />
+      <Route path='/events' element={authenticated ? <AdministerEvent/> :  <Login setAuthenticated={setAuthenticated} />} />
+
+
+    </Routes>
+
+    );
 }
 
 export default App;
