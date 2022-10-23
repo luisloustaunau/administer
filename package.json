@@ -11,9 +11,10 @@
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "axios": "^0.26.1",
+    "bootstrap": "^5.2.0",
     "dotenv-webpack": "^7.1.0",
     "react": "^18.0.0",
-    "react-bootstrap": "^2.2.2",
+    "react-bootstrap": "^2.4.0",
     "react-dom": "^18.0.0",
     "react-google-autocomplete": "^2.6.1",
     "react-router-dom": "^6.2.2",
@@ -47,6 +48,6 @@
   },
   "devDependencies": {
     "@types/google.maps": "^3.48.5"
-  }, 
-  "proxy": "https://hoeodcy5s1.execute-api.us-east-1.amazonaws.com/prod"
+  },
+  "proxy": "https://ku3zneez3a.execute-api.us-east-1.amazonaws.com/prod"
 }

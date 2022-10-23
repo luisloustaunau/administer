@@ -1,7 +1,5 @@
 import { Button } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import  { useState } from "react";
 
  interface Params {
   username: string, 
@@ -12,6 +10,10 @@ import axios from "axios";
 const Login = ({ setAuthenticated } : any) => {
 
 const authorize = ({username, password} :Params) => {
+  console.log(username)
+  console.log(process.env.REACT_APP_USERNAME)
+  console.log(password)
+
    if (username === process.env.REACT_APP_USERNAME && password === process.env.REACT_APP_PASSWORD){
       setAuthenticated(true)
       localStorage.setItem('username', process.env.REACT_APP_USERNAME);

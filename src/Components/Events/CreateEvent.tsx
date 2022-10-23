@@ -1,17 +1,20 @@
-import { Button, Dropdown, Form, Image } from "react-bootstrap";
-import { useState, useEffect, FormEventHandler } from "react";
+import { Button, Dropdown, Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import AutoComplete from "react-google-autocomplete";
 import { Inputs, Hosts, listOfHosts } from "./types";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const CreateEvent = () => {
   const [isBuisness, setIsBuissness] = useState(true);
   const [inputFile, setInputFile] = useState([]);
   const [address, setAddress] = useState(undefined);
   const [uuid, setUuid] =  useState('');
+  
   useEffect(()=>{
     setAddress(undefined);
   }, [isBuisness])
+  
   const [eventInfo, setEventinfo] = useState<Inputs>({
     title: '',
     host: Hosts.None,
@@ -20,21 +23,6 @@ const CreateEvent = () => {
     free: false,
     cost: 0
   });
-
-//errorhandling in file
-// const logger = winston.createLogger({
-//   level: 'info',
-//   format: winston.format.json(),
-//   transports: [
-//     //
-//     // - Write to all logs with level info and below to combined.log
-//     // - Write all logs error (and below) to error.log.
-//     //
-//     new winston.transports.File({ filename: 'error.log', level: 'error' }),
-//     new winston.transports.File({ filename: 'combined.log' })
-//   ]
-// });
-
 
 
   const {title, host, time, description, free, cost} = eventInfo;
@@ -96,9 +84,9 @@ const CreateEvent = () => {
           free,
           cost
       }).then(()=>{
-        console.log('success')
+        console.log('success');
       }).catch((e)=>{
-        console.log('delete'+uuid+' from s3 '+ e)
+        console.log('delete '+uuid+' from s3 '+ e);
       });
 
 
@@ -129,7 +117,9 @@ const CreateEvent = () => {
     return (
         <>
         <div style={{width:'50%', margin: 'auto', display:'block'}}>
+        <Link to ='/'>HOME</Link>
         <div style={{margin: 'auto', display: 'flex',justifyContent:'center'}}>
+          <br></br>
         <h1>Create an event</h1>
         </div>
         <Form onSubmit={handleSubmit}>
@@ -153,7 +143,7 @@ const CreateEvent = () => {
                         componentRestrictions: { country: "mx" },
                         strictBounds: true,
                         types: ['establishment']
-                      } } 
+                      }}
       />
       </div>
     </>
@@ -167,7 +157,7 @@ const CreateEvent = () => {
                       style={ { width: '100%' } }
                       options={ {
                         fields: [ "formatted_address", "icon", "name" ],
-                        componentRestrictions: { country: "mx" },
+                        componentRestrictions: { country: "us"},
                         strictBounds: true,
                         types: [ 'address' ]
                       } } 
