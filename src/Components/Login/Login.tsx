@@ -1,36 +1,33 @@
 import { Button } from "react-bootstrap";
-import  { useState } from "react";
+import { useState } from "react";
 
- interface Params {
-  username: string, 
-  password: string
+interface Params {
+  username: string;
+  password: string;
 }
 
-
-const Login = ({ setAuthenticated } : any) => {
-
-const authorize = ({username, password} :Params) => {
-  console.log(username)
-  console.log(process.env.REACT_APP_USERNAME)
-  console.log(password)
-
-   if (username === process.env.REACT_APP_USERNAME && password === process.env.REACT_APP_PASSWORD){
-      setAuthenticated(true)
-      localStorage.setItem('username', process.env.REACT_APP_USERNAME);
-      localStorage.setItem('password', process.env.REACT_APP_PASSWORD);
-   } else {
-     setError(true)
-     setAuthenticated(false)
-   }
-}
+const Login = ({ setAuthenticated }: any) => {
+  const authorize = ({ username, password }: Params) => {
+    if (
+      username === process.env.REACT_APP_USERNAME &&
+      password === process.env.REACT_APP_PASSWORD
+    ) {
+      setAuthenticated(true);
+      localStorage.setItem("username", process.env.REACT_APP_USERNAME);
+      localStorage.setItem("password", process.env.REACT_APP_PASSWORD);
+    } else {
+      setError(true);
+      setAuthenticated(false);
+    }
+  };
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const submit = async (e: any) => {  
+  const submit = async (e: any) => {
     e.preventDefault();
-   authorize({username, password});
+    authorize({ username, password });
   };
 
   return (
