@@ -15,6 +15,7 @@
     "dotenv-webpack": "^7.1.0",
     "react": "^18.0.0",
     "react-bootstrap": "^2.4.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.0.0",
     "react-google-autocomplete": "^2.6.1",
     "react-router-dom": "^6.2.2",
@@ -48,7 +49,8 @@
     ]
   },
   "devDependencies": {
-    "@types/google.maps": "^3.48.5"
+    "@types/google.maps": "^3.48.5",
+    "@types/react-datepicker": "^4.8.0"
   },
   "proxy": "https://ku3zneez3a.execute-api.us-east-1.amazonaws.com/prod"
 }

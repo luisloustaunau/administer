@@ -3,14 +3,18 @@ import { useState, useEffect } from "react";
 import AutoComplete from "react-google-autocomplete";
 import { Inputs, Hosts, listOfHosts } from "./types";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateEvent = () => {
   const [isBuisness, setIsBuissness] = useState(true);
   const [inputFile, setInputFile] = useState([]);
   const [address, setAddress] = useState(undefined);
   const [uuid, setUuid] = useState("");
+  const [actualDate, setDate] = useState<Date>();
+  const redirect = useNavigate();
 
   useEffect(() => {
     setAddress(undefined);
@@ -19,13 +23,14 @@ const CreateEvent = () => {
   const [eventInfo, setEventinfo] = useState<Inputs>({
     title: "",
     host: Hosts.None,
+    date: "",
     time: "",
     description: "",
     free: false,
     cost: 0,
   });
 
-  const { title, host, time, description, free, cost } = eventInfo;
+  const { title, host, time, description, free, cost, date } = eventInfo;
   const handleTitle = (e: { target: { value: any } }) => {
     setEventinfo({
       ...eventInfo,
@@ -34,6 +39,7 @@ const CreateEvent = () => {
   };
 
   const handleAdress = (place: any) => {
+    console.log(place);
     setAddress(place);
   };
 
@@ -61,11 +67,11 @@ const CreateEvent = () => {
           `/-profile-image?fileName=eventImage${fileLength}&bucketName=event-images-container&subFolder=${uuid}`,
           null
         )
+        // eslint-disable-next-line no-loop-func
         .then((response) => {
           // Getting the url from response
           const url = response.data.fileUploadURL;
           let data = inputFile[fileLength - 1];
-
           axios
             .put(url, data, {
               headers: { "Content-Type": "multipart/form-data" },
@@ -86,6 +92,7 @@ const CreateEvent = () => {
         address,
         uuid,
         title,
+        date,
         host,
         time,
         description,
@@ -93,8 +100,8 @@ const CreateEvent = () => {
         cost,
       })
       .then(() => {
-        console.log("success");
         toast.success("Event created!", { theme: "colored" });
+        redirect("/");
       })
       .catch((e) => {
         toast.error("Failed to create event!", { theme: "colored" });
@@ -116,6 +123,13 @@ const CreateEvent = () => {
     });
   };
 
+  const handleDate = (e: string) => {
+    setEventinfo({
+      ...eventInfo,
+      date: e,
+    });
+  };
+
   const handleChecked = () => {
     setEventinfo({
       ...eventInfo,
@@ -128,7 +142,9 @@ const CreateEvent = () => {
     <>
       <ToastContainer autoClose={2000} />
       <div style={{ width: "50%", margin: "auto", display: "block" }}>
-        <Link to="/">HOME</Link>
+        <Button variant="info">
+          <Link to="/">HOME</Link>
+        </Button>
 
         <div
           style={{ margin: "auto", display: "flex", justifyContent: "center" }}
@@ -166,7 +182,9 @@ const CreateEvent = () => {
                   0,
                   process.env.REACT_APP_API.length - 1
                 ).replaceAll('"', "")}
-                onPlaceSelected={(place) => handleAdress(place)}
+                onPlaceSelected={(place) =>
+                  handleAdress(place.formatted_address)
+                }
                 style={{ width: "100%" }}
                 options={{
                   fields: ["formatted_address", "icon", "name"],
@@ -227,6 +245,16 @@ const CreateEvent = () => {
               required
               type="time"
               onChange={(e) => handleTime(e)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Date</Form.Label>
+            <DatePicker
+              onChange={(e) => {
+                setDate(e || undefined);
+                handleDate(e?.toDateString().toString() || "");
+              }}
+              selected={actualDate}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="any">
